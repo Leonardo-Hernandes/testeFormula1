@@ -9,7 +9,8 @@ import Card from '../../components/Card';
 
 import {
     SafeAreaView,
-    Button
+    Button,
+    FlatList,
 } from 'react-native';
 
 import {
@@ -57,7 +58,14 @@ const Home = () => {
         <SafeAreaView>
             <Container>
                 <Button title="Enviar arquivo"onPress={handleDocumentSelection} />
-                {/* <Card/> */}
+                {pilots ?
+                    <FlatList data={pilots}
+                    renderItem={({ item }) => <Card pilot={item}/>}
+                    contentContainerStyle={{
+                      paddingBottom: 50 * 2
+                    }}
+                    />
+                : null}
             </Container>
         </SafeAreaView>
     )

@@ -12,27 +12,27 @@ import {
     DataItem
 } from './styles';
 
-const Card = (pilot: Pilot) => {
+const Card = (pilot: any) => {
     return (
         <TouchableOpacity>
             <Container>
                 <DetailsContainer>
-                    <PrimaryText>Cod 001</PrimaryText>
-                    <Title>{pilot.name}</Title>
+                    <PrimaryText>Cod: {pilot.pilot.id}</PrimaryText>
+                    <Title>{pilot.pilot.name}</Title>
                 </DetailsContainer>
                 <DetailsContainer>
                     <Row>
                         <DataItem>
                             <PrimaryText>Posição</PrimaryText>
-                            <SecondaryText>1°</SecondaryText>
+                            <SecondaryText>{pilot.pilot.key + 1}°</SecondaryText>
                         </DataItem>
                         <DataItem>
                             <PrimaryText>Voltas</PrimaryText>
-                            <SecondaryText>{pilot.laps}</SecondaryText>
+                            <SecondaryText>{pilot.pilot.laps}</SecondaryText>
                         </DataItem>
                         <DataItem>
                             <PrimaryText>Tempo total</PrimaryText>
-                            <SecondaryText>0:00</SecondaryText>
+                            <SecondaryText>{pilot.pilot.totalTime}</SecondaryText>
                         </DataItem>
                     </Row>
                 </DetailsContainer>

@@ -18,7 +18,6 @@ export const Row = styled.View`
 `;
 
 export const DataItem = styled.View`
-  // flex: 1;
   justify-content: center;
   align-itens: center;
   margin-left: 5px;

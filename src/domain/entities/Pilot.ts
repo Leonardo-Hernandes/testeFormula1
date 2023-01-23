@@ -3,10 +3,17 @@ export default class Pilot {
     name: string
     laps: number
     timePerLap: string
-    totalTime: number
+    totalTime: string
     speed: number
 
-    constructor(id: number, name: string, laps: number, timePerLap: string, totalTime: number, speed: number) {
+    constructor(
+        id: number,
+        name: string,
+        laps: number,
+        timePerLap: string,
+        totalTime: string,
+        speed: number
+    ) {
         this.id = id
         this.name = name
         this.laps = laps
