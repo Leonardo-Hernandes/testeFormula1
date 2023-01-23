@@ -4,6 +4,7 @@ import PilotsRepositoryImpl from "../../.././src/data/repositories/PilotReposito
 import PilotService from '../../.././src/domain/usecase/PilotService';
 import DocumentPicker from 'react-native-document-picker';
 import RNFS from 'react-native-fs';
+import Card from '../../components/Card';
 
 
 import {
@@ -13,8 +14,8 @@ import {
 
 import {
     Container,
-    Title,
 } from './styles';
+
 
 
 const Home = () => {
@@ -56,6 +57,7 @@ const Home = () => {
         <SafeAreaView>
             <Container>
                 <Button title="Enviar arquivo"onPress={handleDocumentSelection} />
+                {/* <Card/> */}
             </Container>
         </SafeAreaView>
     )
