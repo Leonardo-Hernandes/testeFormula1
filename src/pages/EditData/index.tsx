@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-import { SafeAreaView } from 'react-native';
+import { KeyboardAvoidingView, SafeAreaView, ScrollView } from 'react-native';
 import {
     TextInput,
     Button,
     Avatar
 } from 'react-native-paper';
+import { Platform } from 'react-native/Libraries/Utilities/Platform';
 
 import {
     Container,
@@ -15,83 +16,106 @@ import {
     Padding
 } from './styles';
 
-const EditData = () => {
-    const [pilotPosition, setPilotPosition] = useState()
-    const [pilotCode, setPilotCode] = useState()
-    const [pilotName, setPilotName] = useState()
-    const [pilotLaps, setPilotLaps] = useState()
-    const [pilotTotalTime, setPilotTotalTime] = useState()
+const EditData = (data: any) => {
+    const [pilotPosition, setPilotPosition] = useState<string>()
+    const [pilotCode, setPilotCode] = useState<string>()
+    const [pilotName, setPilotName] = useState<string>()
+    const [pilotLaps, setPilotLaps] = useState<string>()
+    const [pilotTotalTime, setPilotTotalTime] = useState<string>()
+    let newPilot = data.route.params.pilot
+    const updatePilot = data.route.params.updatePilot
+
+    useEffect(() => {
+        setPilotPosition(newPilot.key.toString());
+        setPilotCode(newPilot.id.toString());
+        setPilotName(newPilot.name);
+        setPilotLaps(newPilot.laps.toString());
+        setPilotTotalTime(newPilot.totalTime);
+    }, [])
 
     const handleSave = () => {
-        console.log("Save")
+        newPilot.name = pilotName
+        newPilot.laps = pilotLaps
+        newPilot.totalTime = pilotTotalTime
+
+        updatePilot(newPilot)
+        data.navigation.goBack()
     }
 
     const handleCancel = () => {
-        console.log("Cancel")
+        data.navigation.goBack()
     }
 
     return (
-        <SafeAreaView>
-            <Container>
-                <PilotBox>
-                    <AvatarBox>
-                        <Avatar.Text size={140} label="Ts" />
-                    </AvatarBox>
-                    <Padding>
-                        <TextInput
-                            label="Posição"
-                            mode='outlined'
-                            onChangeText={pilotPosition => setPilotPosition}
-                            value={pilotPosition}
-                            keyboardType="numeric"
-                        />
-                    </Padding>
-                    <Padding>
-                        <TextInput
-                            label="Código"
-                            mode='outlined'
-                            onChangeText={pilotCode => setPilotCode}
-                            value={pilotCode}
-                            keyboardType="numeric"
-                        />
-                    </Padding>
-                    <Padding>
-                        <TextInput
-                            label="Nome do Piloto"
-                            mode='outlined'
-                            onChangeText={pilotName => setPilotName}
-                            value={pilotName}
-                        />
-                    </Padding>
-                    <Padding>
-                        <TextInput
-                            label="Quantidade de Voltas"
-                            mode='outlined'
-                            onChangeText={pilotLaps => setPilotLaps}
-                            value={pilotLaps}
-                            keyboardType="numeric"
-                        />
-                    </Padding>
-                    <Padding>
-                        <TextInput
-                            label="Tempo Total da Corrida"
-                            mode='outlined'
-                            onChangeText={pilotTotalTime => setPilotTotalTime}
-                            value={pilotTotalTime}
-                        />
-                    </Padding>
-                </PilotBox>
-                <Row>
-                    <Button mode="contained" onPress={handleCancel}>
-                        Cancelar
-                    </Button>
-                    <Button mode="contained" onPress={handleSave}>
-                        Salvar
-                    </Button>
-                </Row>
-            </Container>
-        </SafeAreaView>
-
+        <ScrollView showsVerticalScrollIndicator={false}>
+            <SafeAreaView>
+                <Container>
+                    <KeyboardAvoidingView
+                        behavior="height"
+                        keyboardVerticalOffset={-200}
+                    >
+                        <PilotBox>
+                            <AvatarBox>
+                                <Avatar.Text size={140} label="Ts" />
+                            </AvatarBox>
+                            <Padding>
+                                <TextInput
+                                    label="Posição"
+                                    mode='outlined'
+                                    onChangeText={pilotPosition => setPilotPosition(pilotPosition)}
+                                    value={pilotPosition}
+                                    disabled
+                                    keyboardType="numeric"
+                                />
+                            </Padding>
+                            <Padding>
+                                <TextInput
+                                    label="Código"
+                                    mode='outlined'
+                                    disabled
+                                    onChangeText={pilotCode => setPilotCode(pilotCode)}
+                                    value={pilotCode}
+                                    keyboardType="numeric"
+                                />
+                            </Padding>
+                            <Padding>
+                                <TextInput
+                                    label="Nome do Piloto"
+                                    mode='outlined'
+                                    onChangeText={pilotName => setPilotName(pilotName)}
+                                    value={pilotName}
+                                />
+                            </Padding>
+                            <Padding>
+                                <TextInput
+                                    label="Quantidade de Voltas"
+                                    mode='outlined'
+                                    onChangeText={pilotLaps => setPilotLaps(pilotLaps)}
+                                    value={pilotLaps}
+                                    keyboardType="numeric"
+                                />
+                            </Padding>
+                            <Padding>
+                                <TextInput
+                                    label="Tempo Total da Corrida"
+                                    mode='outlined'
+                                    onChangeText={pilotTotalTime => setPilotTotalTime(pilotTotalTime)}
+                                    value={pilotTotalTime}
+                                />
+                            </Padding>
+                        </PilotBox>
+                        <Row>
+                            <Button mode="contained" onPress={handleCancel}>
+                                Cancelar
+                            </Button>
+                            <Button mode="contained" onPress={handleSave}>
+                                Salvar
+                            </Button>
+                        </Row>
+                    </KeyboardAvoidingView>
+                </Container>
+            </SafeAreaView>
+        </ScrollView>
     );
 }
 

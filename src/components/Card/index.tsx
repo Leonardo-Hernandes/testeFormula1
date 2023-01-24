@@ -12,27 +12,36 @@ import {
     DataItem
 } from './styles';
 
-const Card = (pilot: any) => {
+const Card = (props: any) => {
+    const pilot = props.pilot;
+    const pilots = props.pilots;
+    const updatePilot = props.updatePilot
+    const navigation = props.props.navigation
+
     return (
-        <TouchableOpacity>
+        <TouchableOpacity
+            onPress={() =>
+                navigation.navigate('Editar Dados', {pilot, pilots, updatePilot})
+            }
+        >
             <Container>
                 <DetailsContainer>
-                    <PrimaryText>Cod: {pilot.pilot.id}</PrimaryText>
-                    <Title>{pilot.pilot.name}</Title>
+                    <PrimaryText>Cod: {pilot.id}</PrimaryText>
+                    <Title>{pilot.name}</Title>
                 </DetailsContainer>
                 <DetailsContainer>
                     <Row>
                         <DataItem>
                             <PrimaryText>Posição</PrimaryText>
-                            <SecondaryText>{pilot.pilot.key + 1}°</SecondaryText>
+                            <SecondaryText>{pilot.key + 1}°</SecondaryText>
                         </DataItem>
                         <DataItem>
                             <PrimaryText>Voltas</PrimaryText>
-                            <SecondaryText>{pilot.pilot.laps}</SecondaryText>
+                            <SecondaryText>{pilot.laps}</SecondaryText>
                         </DataItem>
                         <DataItem>
                             <PrimaryText>Tempo total</PrimaryText>
-                            <SecondaryText>{pilot.pilot.totalTime}</SecondaryText>
+                            <SecondaryText>{pilot.totalTime}</SecondaryText>
                         </DataItem>
                     </Row>
                 </DetailsContainer>

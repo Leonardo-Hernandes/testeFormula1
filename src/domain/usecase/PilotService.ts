@@ -8,6 +8,10 @@ export default class PilotServiceImpl {
         this.pilotRepo = ir
     }
 
+    async OrganizeData (data : any): Promise<Pilot[]> {
+        return this.pilotRepo.OrganizeData(data)
+    }
+
     async GetPilots(data : any): Promise<Pilot[]> {
         return this.pilotRepo.GetPilots(data)
     }

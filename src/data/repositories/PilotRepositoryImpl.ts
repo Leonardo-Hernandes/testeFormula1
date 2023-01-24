@@ -42,7 +42,7 @@ export default class PilotRepositoryImpl implements PilotRepository {
 
 
 
-    organizeData(data: Pilot[]) {
+    async OrganizeData(data: Pilot[]) {
         let maxLaps = this.getMaxLaps(data);
         let organizingData: any = []
         const organizedData: any = [];
@@ -93,7 +93,7 @@ export default class PilotRepositoryImpl implements PilotRepository {
             formatedData.push(formatedItem)
         }
 
-        const finalData = this.organizeData(formatedData);
+        const finalData = await this.OrganizeData(formatedData);
 
         return finalData.map((item: Pilot, index: number) => ({
             id: item.id,

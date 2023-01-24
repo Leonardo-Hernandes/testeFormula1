@@ -19,18 +19,33 @@ import {
 
 
 
-const Home = () => {
+const Home = (props: any) => {
     const [fileResponse, setFileResponse] = useState<any>();
     const [pilots, setPilots] = useState<any>([]);
+    const [isLoading, setIsLoading] = useState<any>(false);
     const pilotRepo = new PilotsRepositoryImpl();
     const pilotService = new PilotService(pilotRepo);
 
+    useEffect(() => {
+        setIsLoading(false)
+    }, [isLoading])
+    
     useEffect(() => {
         if (fileResponse) {
             readFile(fileResponse[0].uri)
         }
     }, [fileResponse])
 
+
+    const updatePilot = async (pilot: any) => {
+        setIsLoading(true)
+        const newPilots = pilots;
+        const find = pilots.indexOf(pilot)
+        newPilots[find] = pilot
+
+        const resp = await pilotService.OrganizeData(newPilots);
+        setPilots(resp)
+    }
 
     const handleDocumentSelection = useCallback(async () => {
         try {
@@ -46,26 +61,31 @@ const Home = () => {
     const readFile = async (path: string) => {
         try {
             const contents = await RNFS.readFile(path, "utf8");
-            const pilotsResponse = await pilotService.GetPilots(contents)
-
-            setPilots(pilotsResponse)
+            getPilots(contents)
         } catch (e) {
             console.log(e);
         }
     };
 
+    const getPilots = async (contents: any) => {
+        const pilotsResponse = await pilotService.GetPilots(contents)
+
+        setPilots(pilotsResponse)
+    }
+
     return (
         <SafeAreaView>
             <Container>
-                <Button title="Enviar arquivo"onPress={handleDocumentSelection} />
-                {pilots ?
+                <Button title="Enviar arquivo" onPress={handleDocumentSelection} />
+                {!isLoading ?
                     <FlatList data={pilots}
-                    renderItem={({ item }) => <Card pilot={item}/>}
-                    contentContainerStyle={{
-                      paddingBottom: 50 * 2
-                    }}
+                        renderItem={({ item }) => <Card props={props} pilot={item} pilots={pilots} updatePilot={updatePilot} />}
+                        contentContainerStyle={{
+                            paddingBottom: 50 * 2
+                        }}
+                        showsVerticalScrollIndicator={false}
                     />
-                : null}
+                    : null}
             </Container>
         </SafeAreaView>
     )
