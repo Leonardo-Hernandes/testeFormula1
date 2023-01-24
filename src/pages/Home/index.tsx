@@ -9,9 +9,12 @@ import Card from '../../components/Card';
 
 import {
     SafeAreaView,
-    Button,
     FlatList,
 } from 'react-native';
+
+import {
+    Button,
+} from 'react-native-paper';
 
 import {
     Container,
@@ -29,7 +32,7 @@ const Home = (props: any) => {
     useEffect(() => {
         setIsLoading(false)
     }, [isLoading])
-    
+
     useEffect(() => {
         if (fileResponse) {
             readFile(fileResponse[0].uri)
@@ -45,7 +48,7 @@ const Home = (props: any) => {
 
         const resp = await pilotService.OrganizeData(newPilots);
         setPilots(resp)
-    }
+    };
 
     const handleDocumentSelection = useCallback(async () => {
         try {
@@ -71,12 +74,14 @@ const Home = (props: any) => {
         const pilotsResponse = await pilotService.GetPilots(contents)
 
         setPilots(pilotsResponse)
-    }
+    };
 
     return (
         <SafeAreaView>
             <Container>
-                <Button title="Enviar arquivo" onPress={handleDocumentSelection} />
+                <Button mode="contained" onPress={handleDocumentSelection} style={{ backgroundColor: "#0d807a" }}>
+                    Enviar Arquivo
+                </Button>
                 {!isLoading ?
                     <FlatList data={pilots}
                         renderItem={({ item }) => <Card props={props} pilot={item} pilots={pilots} updatePilot={updatePilot} />}

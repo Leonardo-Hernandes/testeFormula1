@@ -6,7 +6,6 @@ import {
     Button,
     Avatar
 } from 'react-native-paper';
-import { Platform } from 'react-native/Libraries/Utilities/Platform';
 
 import {
     Container,
@@ -19,7 +18,7 @@ import {
 const EditData = (data: any) => {
     const [pilotPosition, setPilotPosition] = useState<string>()
     const [pilotCode, setPilotCode] = useState<string>()
-    const [pilotName, setPilotName] = useState<string>()
+    const [pilotName, setPilotName] = useState<string>("")
     const [pilotLaps, setPilotLaps] = useState<string>()
     const [pilotTotalTime, setPilotTotalTime] = useState<string>()
     let newPilot = data.route.params.pilot
@@ -55,8 +54,8 @@ const EditData = (data: any) => {
                         keyboardVerticalOffset={-200}
                     >
                         <PilotBox>
-                            <AvatarBox>
-                                <Avatar.Text size={140} label="Ts" />
+                            <AvatarBox >
+                                <Avatar.Text size={150} label={pilotName?.slice(0,3)} style={{backgroundColor: "#0d807a"}}/>
                             </AvatarBox>
                             <Padding>
                                 <TextInput
@@ -105,10 +104,10 @@ const EditData = (data: any) => {
                             </Padding>
                         </PilotBox>
                         <Row>
-                            <Button mode="contained" onPress={handleCancel}>
+                            <Button mode="contained" onPress={handleCancel} style={{backgroundColor: "#0d807a"}}>
                                 Cancelar
                             </Button>
-                            <Button mode="contained" onPress={handleSave}>
+                            <Button mode="contained" onPress={handleSave} style={{backgroundColor: "#0d807a"}}>
                                 Salvar
                             </Button>
                         </Row>

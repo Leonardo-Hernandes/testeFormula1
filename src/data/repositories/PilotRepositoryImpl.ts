@@ -12,7 +12,7 @@ export default class PilotRepositoryImpl implements PilotRepository {
 
         const totalTime = `${this.padTo2Digits(minutes)}:${this.padTo2Digits(totalSeconds)}`;
 
-        return { milliseconds: totalMilliseconds, totalTime: totalTime.substr(0, 9) }
+        return totalTime.substr(0, 9)
     }
 
     padTo2Digits(num: number) {
@@ -36,13 +36,10 @@ export default class PilotRepositoryImpl implements PilotRepository {
             if (item.laps > laps)
                 laps = item.laps
         };
-
         return laps
     }
 
-
-
-    async OrganizeData(data: Pilot[]) {
+    async OrganizeData(data: any[]) {
         let maxLaps = this.getMaxLaps(data);
         let organizingData: any = []
         const organizedData: any = [];
@@ -50,6 +47,9 @@ export default class PilotRepositoryImpl implements PilotRepository {
         while(maxLaps > 0) {
             for (let item of data) {
                 if (item.laps == maxLaps) {
+                    const time = item.timePerLap.replace(":", ".");
+                    const formatedTime = this.calcTime(time, item.laps);
+                    item.totalTime = formatedTime;
                     organizingData.push(item)
                 }
             }
@@ -66,36 +66,7 @@ export default class PilotRepositoryImpl implements PilotRepository {
             maxLaps --
         }   
         
-        return organizedData;
-    }
-
-
-
-    async GetPilots(data: any): Promise<Pilot[]> {
-        const dataLines = data.split(/\r?\n/)
-        const formatedData = []
-        dataLines.shift()
-
-        for (let item of dataLines) {
-            const separetedItem = item.split(" ")
-            const time = separetedItem[5].replace(":", ".")
-            const formatedTime = this.calcTime(time, separetedItem[4])
-
-            const formatedItem = {
-                "id": parseInt(separetedItem[1]),
-                "name": separetedItem[3],
-                "laps": parseInt(separetedItem[4]),
-                "timePerLap": separetedItem[5],
-                "totalTime": formatedTime.totalTime,
-                "speed": parseInt(separetedItem[6]),
-            }
-
-            formatedData.push(formatedItem)
-        }
-
-        const finalData = await this.OrganizeData(formatedData);
-
-        return finalData.map((item: Pilot, index: number) => ({
+        return organizedData.map((item: Pilot, index: number) => ({
             id: item.id,
             key: index,
             name: item.name,
@@ -104,5 +75,31 @@ export default class PilotRepositoryImpl implements PilotRepository {
             totalTime: item.totalTime,
             speed: item.speed
         }));
+    }
+
+
+
+    async GetPilots(data: any): Promise<Pilot[]> {
+        const dataLines = data.split(/\r?\n/)
+        const formatedData = []
+        dataLines.shift()
+        
+        for (let item of dataLines) {
+            const separetedItem = item.split(" ")
+
+            const formatedItem = {
+                "id": parseInt(separetedItem[1]),
+                "name": separetedItem[3],
+                "laps": parseInt(separetedItem[4]),
+                "timePerLap": separetedItem[5],
+                "speed": parseInt(separetedItem[6]),
+            }
+
+            formatedData.push(formatedItem)
+        }
+
+        const finalData = await this.OrganizeData(formatedData);
+
+        return finalData;
     }
 }

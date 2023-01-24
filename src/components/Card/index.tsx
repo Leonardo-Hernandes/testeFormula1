@@ -21,7 +21,7 @@ const Card = (props: any) => {
     return (
         <TouchableOpacity
             onPress={() =>
-                navigation.navigate('Editar Dados', {pilot, pilots, updatePilot})
+                navigation.navigate('Editar Dados', { pilot, pilots, updatePilot })
             }
         >
             <Container>
